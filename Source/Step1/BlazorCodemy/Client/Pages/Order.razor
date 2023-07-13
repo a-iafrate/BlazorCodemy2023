@@ -1,0 +1,41 @@
+﻿@page "/order"
+@using BlazorCodemy.Shared
+@inject HttpClient Http
+
+<PageTitle>Weather forecast</PageTitle>
+<div class="main">
+<h1>Order</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul class="pizza-cards">
+
+        @foreach (var forecast in forecasts)
+            {
+            <li style="background-image: url('https://i0.wp.com/www.meganerd.it/wp-content/uploads/2019/06/marvel.jpg?w=1680&ssl=1')">
+                    <div class="pizza-info">
+                    <span class="title">@forecast.Date.ToShortDateString()</span>
+                    @forecast.Summary
+                    <span class="price">&euro;@forecast.TemperatureC</span>
+                    </div>
+                </li>
+            }
+        
+    </ul>
+    
+}
+</div>
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+    }
+}
