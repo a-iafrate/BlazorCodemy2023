@@ -1,0 +1,88 @@
+﻿@using BlazorCodemy.Shared;
+@inject HttpClient HttpClient
+
+<div class="dialog-container">
+    <div class="dialog">
+<div class="dialog-title">
+    <h2>@item.Name</h2>
+    @item.Description
+</div>
+<form class="dialog-body">
+   
+    <div>
+        <label>Extra Toppings:</label>
+        @if (shipping == null)
+        {
+            <select class="custom-select" disabled>
+                <option>(loading...)</option>
+            </select>
+        }
+        
+        else
+        {
+            <select class="custom-select" @onchange="ToppingSelected">
+                <option value="-1" disabled selected>(select)</option>
+                @for (var i = 0; i < shipping.Count; i++)
+                {
+                    <option value="@i">@shipping[i].Name - (£@(shipping[i].Price))</option>
+                }
+            </select>
+        }
+    </div>
+
+    <div class="toppings">
+        @foreach (var topping in item.shippings)
+        {
+            <div class="topping">
+                @topping.Name
+                <span class="topping-price">@topping.Price</span>
+                <button type="button" class="delete-topping" @onclick="@(() => RemoveTopping(topping))">x</button>
+            </div>
+        }
+    </div>
+</form>
+
+<div class="dialog-buttons">
+    <button class="btn btn-secondary mr-auto" @onclick="OnCancel">Cancel</button>
+    <span class="mr-center">
+        Price: <span class="price">@(item.Price)</span>
+    </span>
+    <button class="btn btn-success ml-auto" @onclick="OnConfirm">Order ></button>
+</div>
+
+</div>
+</div>
+
+@code {
+    List<Shipping> shipping;
+
+    [Parameter] public ShopElement item { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public EventCallback OnConfirm { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        shipping = new List<Shipping>() { new Shipping() {Name="1",Price=2 } };
+    }
+
+    void ToppingSelected(ChangeEventArgs e)
+    {
+        if (int.TryParse((string)e.Value, out var index) && index >= 0)
+        {
+            AddTopping(shipping[index]);
+        }
+    }
+
+    void AddTopping(Shipping topping)
+    {
+        if (item.shippings.Find(pt => pt == topping) == null)
+        {
+            item.shippings.Add(topping);
+        }
+    }
+
+    void RemoveTopping(Shipping topping)
+    {
+        item.shippings.RemoveAll(pt => pt == topping);
+    }
+}
