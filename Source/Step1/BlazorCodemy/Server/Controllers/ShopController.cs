@@ -5,13 +5,13 @@ namespace BlazorCodemy.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class ShopController : ControllerBase
     {
         
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<ShopController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public ShopController(ILogger<ShopController> logger)
         {
             _logger = logger;
         }

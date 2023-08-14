@@ -42,7 +42,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        items = await Http.GetFromJsonAsync<List<ShopElement>>("WeatherForecast");
+        items = await Http.GetFromJsonAsync<List<ShopElement>>("Shop");
     }
 
     void ShowConfigureDialog(ShopElement item)
