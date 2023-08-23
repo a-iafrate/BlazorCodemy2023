@@ -18,11 +18,11 @@
 }
 else
 {
-    <ul class="pizza-cards">
+    <ul class="item-cards">
 
         @foreach (var item in items)
             {
-                <li @onclick="@(() => ShowConfigureDialog(item))"  style="background-image: url('https://i0.wp.com/www.meganerd.it/wp-content/uploads/2019/06/marvel.jpg?w=1680&ssl=1')">
+                <li @onclick="@(() => ShowConfigureDialog(item))" style="background-image: url('@item.ImageUrl')">
                     <div class="pizza-info">
                     <span class="title">@item.Name</span>
                     @item.Description
@@ -35,9 +35,34 @@ else
     
 }
 </div>
+<div class="sidebar">
+    @if (order.ShopElements.Any())
+    {
+        <div class="order-contents">
+            <h2>Your order</h2>
+
+            @foreach (var configuredOrder in order.ShopElements)
+            {
+                <ConfigureOrderItem Item="configuredOrder" OnRemoved="@(() => RemoveConfiguredPizza(configuredOrder))" />
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-cart">Inizia ad ordinare qualcosa</div>
+    }
+
+    <div class="order-total @(order.ShopElements.Any() ? "" : "hidden")">
+        Total:
+        <span class="total-price">@order.ShopElements.Sum(x=>x.GetTotalPrice())</span>
+        <a href="checkout" class="@(order.ShopElements.Count == 0 ? "btn btn-warning disabled" : "btn btn-warning")">
+            Order >
+        </a>
+    </div>
+</div>
 @code {
     private List<ShopElement>? items;
-    private List<Order> orders=new List<Order>();
+    private Order order=new Order();
     private ShopElement SelectedItem;
     private bool showingConfigureDialog = false;
 
@@ -61,12 +86,16 @@ else
 
     void ConfirmConfigurePizzaDialog()
     {
-        Order order = new Order();
+        
         order.ShopElements.Add(SelectedItem);
-        orders.Add(order);
 
         SelectedItem = null;
 
         showingConfigureDialog = false;
+    }
+
+    public void RemoveConfiguredPizza(ShopElement elem)
+    {
+        order.ShopElements.Remove(elem);
     }
 }
