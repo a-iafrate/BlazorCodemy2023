@@ -37,6 +37,7 @@ else
 </div>
 @code {
     private List<ShopElement>? items;
+    private List<Order> orders=new List<Order>();
     private ShopElement SelectedItem;
     private bool showingConfigureDialog = false;
 
@@ -60,6 +61,10 @@ else
 
     void ConfirmConfigurePizzaDialog()
     {
+        Order order = new Order();
+        order.ShopElements.Add(SelectedItem);
+        orders.Add(order);
+
         SelectedItem = null;
 
         showingConfigureDialog = false;

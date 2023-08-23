@@ -376,9 +376,7 @@ a, .btn-link {
     font-size: 0.8rem;
 }
 
-    .dialog .topping-price::before {
-        content: '£';
-    }
+   
 
 .delete-topping {
     background: none;

@@ -8,7 +8,7 @@
     @item.Description
 </div>
 <form class="dialog-body">
-   
+            
     <div>
         <label>Extra Toppings:</label>
         @if (shipping == null)
@@ -24,18 +24,18 @@
                 <option value="-1" disabled selected>(select)</option>
                 @for (var i = 0; i < shipping.Count; i++)
                 {
-                    <option value="@i">@shipping[i].Name - (£@(shipping[i].Price))</option>
+                    <option value="@i">@shipping[i].Name - (&euro;@(shipping[i].Price))</option>
                 }
             </select>
         }
     </div>
 
     <div class="toppings">
-        @foreach (var topping in item.shippings)
+        @foreach (var topping in item.Shippings)
         {
             <div class="topping">
                 @topping.Name
-                <span class="topping-price">@topping.Price</span>
+                        <span class="topping-price">&euro;@topping.Price</span>
                 <button type="button" class="delete-topping" @onclick="@(() => RemoveTopping(topping))">x</button>
             </div>
         }
@@ -62,7 +62,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        shipping = new List<Shipping>() { new Shipping() {Name="1",Price=2 } };
+        shipping = new List<Shipping>() { new Shipping() { Name = "Spedizione prioritaria", Price = 2 }, new Shipping() { Name = "Pacco anonimo", Price = 4 } };
     }
 
     void ToppingSelected(ChangeEventArgs e)
@@ -75,14 +75,14 @@
 
     void AddTopping(Shipping topping)
     {
-        if (item.shippings.Find(pt => pt == topping) == null)
+        if (item.Shippings.Find(pt => pt == topping) == null)
         {
-            item.shippings.Add(topping);
+            item.Shippings.Add(topping);
         }
     }
 
     void RemoveTopping(Shipping topping)
     {
-        item.shippings.RemoveAll(pt => pt == topping);
+        item.Shippings.RemoveAll(pt => pt == topping);
     }
 }
