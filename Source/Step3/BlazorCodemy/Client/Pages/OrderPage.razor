@@ -1,0 +1,103 @@
+﻿@page "/order"
+@using BlazorCodemy.Shared
+@inject HttpClient Http
+@inject OrderState OrderState
+
+
+<PageTitle>Shop</PageTitle>
+<div class="main">
+<h1>Order</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+@if (showingConfigureDialog)
+{
+        <ConfigureOrder item="SelectedItem" OnCancel="CancelConfigurePizzaDialog"
+                        OnConfirm="ConfirmConfigurePizzaDialog" />
+}
+@if (items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul class="item-cards">
+
+        @foreach (var item in items)
+            {
+                <li @onclick="@(() => ShowConfigureDialog(item))" style="background-image: url('@item.ImageUrl')">
+                    <div class="pizza-info">
+                    <span class="title">@item.Name</span>
+                    @item.Description
+                    <span class="price">&euro;@item.Price</span>
+                    </div>
+                </li>
+            }
+        
+    </ul>
+    
+}
+</div>
+<div class="sidebar">
+    @if (order.ShopElements.Any())
+    {
+        <div class="order-contents">
+            <h2>Your order</h2>
+
+            @foreach (var configuredOrder in order.ShopElements)
+            {
+                <ConfigureOrderItem Item="configuredOrder" OnRemoved="@(() => RemoveConfiguredPizza(configuredOrder))" />
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-cart">Inizia ad ordinare qualcosa</div>
+    }
+
+    <div class="order-total @(order.ShopElements.Any() ? "" : "hidden")">
+        Total:
+        <span class="total-price">@order.ShopElements.Sum(x=>x.GetTotalPrice())</span>
+        <a href="checkout" class="@(order.ShopElements.Count == 0 ? "btn btn-warning disabled" : "btn btn-warning")">
+            Order >
+        </a>
+    </div>
+</div>
+@code {
+    private List<ShopElement>? items;
+    private Order order => OrderState.Order;
+    private ShopElement SelectedItem;
+    private bool showingConfigureDialog = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await Http.GetFromJsonAsync<List<ShopElement>>("Shop");
+    }
+
+    void ShowConfigureDialog(ShopElement item)
+    {
+        SelectedItem = item;
+
+        showingConfigureDialog = true;
+    }
+
+    void CancelConfigurePizzaDialog()
+    {
+        SelectedItem = null;
+        showingConfigureDialog = false;
+    }
+
+    void ConfirmConfigurePizzaDialog()
+    {
+        
+        order.ShopElements.Add(SelectedItem);
+
+        SelectedItem = null;
+
+        showingConfigureDialog = false;
+    }
+
+    public void RemoveConfiguredPizza(ShopElement elem)
+    {
+        order.ShopElements.Remove(elem);
+    }
+}

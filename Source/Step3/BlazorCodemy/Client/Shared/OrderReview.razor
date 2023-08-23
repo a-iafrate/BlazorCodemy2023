@@ -1,0 +1,29 @@
+﻿@using BlazorCodemy.Shared;
+﻿@foreach (var elem in Order.ShopElements)
+{
+    <p>
+        <strong>
+
+            @elem.Name
+            (€@elem.GetFormattedTotalPrice())
+        </strong>
+    </p>
+
+    <ul>
+        @foreach (var e in elem.Shippings)
+        {
+            <li>+ @e.Name</li>
+        }
+    </ul>
+}
+
+<p>
+    <strong>
+        Total price:
+        £@Order.GetFormattedTotalPrice()
+    </strong>
+</p>
+
+@code {
+    [Parameter] public Order Order { get; set; }
+}
