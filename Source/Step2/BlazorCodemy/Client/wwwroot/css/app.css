@@ -23,7 +23,7 @@
             transform: scale(1.02);
         }
 
-.pizza-info {
+.item-info {
     border-radius: 0.5rem;
     top: 0;
     left: 0;
@@ -38,7 +38,7 @@
     line-height: 1.25rem;
 }
 
-    .pizza-info .title {
+    .item-info .title {
         color: white;
         font-size: 1.4rem;
         display: block;
@@ -47,7 +47,7 @@
         text-transform: uppercase;
     }
 
-    .pizza-info .price {
+    .item-info .price {
         position: absolute;
         bottom: 0.5rem;
         right: 1rem;

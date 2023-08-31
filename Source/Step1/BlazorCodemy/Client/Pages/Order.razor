@@ -23,7 +23,7 @@ else
         @foreach (var item in items)
             {
                 <li @onclick="@(() => ShowConfigureDialog(item))"  style="background-image: url('https://i0.wp.com/www.meganerd.it/wp-content/uploads/2019/06/marvel.jpg?w=1680&ssl=1')">
-                    <div class="pizza-info">
+                    <div class="item-info">
                     <span class="title">@item.Name</span>
                     @item.Description
                     <span class="price">&euro;@item.Price</span>
