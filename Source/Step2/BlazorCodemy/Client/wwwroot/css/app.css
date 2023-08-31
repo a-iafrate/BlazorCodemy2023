@@ -177,7 +177,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 
@@ -376,7 +376,7 @@ a, .btn-link {
     font-size: 0.8rem;
 }
 
-   
+
 
 .delete-topping {
     background: none;
@@ -532,4 +532,38 @@ a, .btn-link {
 .configured-pizza-item {
     display: flex;
     flex-direction: row;
+}
+
+/* Checkout */
+
+.checkout-cols {
+    display: flex;
+}
+
+    .checkout-cols h4 {
+        margin-bottom: 1.5rem;
+    }
+
+    .checkout-cols > div {
+        flex: 1;
+        margin: 1rem;
+        border: 1px solid #ddd;
+        background: rgba(255,255,255,0.3);
+        padding: 1.25rem 1rem;
+    }
+
+        .checkout-cols > div:first-child {
+            margin-left: 0;
+        }
+
+        .checkout-cols > div:last-child {
+            margin-right: 0;
+        }
+
+.checkout-button {
+    margin: auto;
+    display: block;
+    font-weight: 700;
+    border-radius: 20px;
+    padding: 0.4rem 1.2rem;
 }
